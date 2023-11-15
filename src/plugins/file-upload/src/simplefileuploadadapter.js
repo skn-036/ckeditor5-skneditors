@@ -28,7 +28,6 @@ export default class SimpleFileUploadAdapter extends Plugin {
         }
 
         if (!options.url) {
-            logWarning('url-property-is-missing-on-simple-file-upload-config');
             return;
         }
 
@@ -126,6 +125,13 @@ class FileUploadAdapter {
         const data = new FormData();
 
         data.append('upload', file);
+        if (this.options?.additionalRequestPayload) {
+            Object.entries(this.options?.additionalRequestPayload).forEach(
+                ([key, val]) => {
+                    data.append(key, val);
+                }
+            );
+        }
 
         // Send the request.
         this.xhr.send(data);

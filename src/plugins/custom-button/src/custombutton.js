@@ -19,14 +19,16 @@ export default class CustomButton extends Plugin {
                 }`,
             });
             view.on('execute', (evt) => {
-                if (
-                    option &&
-                    option.onClick &&
-                    typeof option.onClick === 'function'
-                )
-                    option.onClick(evt);
+                if (typeof option?.onClick === 'function') option.onClick(evt);
             });
             return view;
         });
+
+        if (typeof option?.onClick === 'function') {
+            editor.keystrokes.set('Ctrl+S', (evt, cancel) => {
+                option.onClick(evt);
+                cancel();
+            });
+        }
     }
 }

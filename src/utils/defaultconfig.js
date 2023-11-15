@@ -56,25 +56,26 @@ export default {
         ],
     },
     simpleFileUpload: {
-        url: 'http://my-custom-link.com',
+        url: null,
+        additionalRequestPayload: null,
         deleteUrl: null, // if delete url provided on the delete action, a http DELETE request will be sent in this url
-        onDelete: null, // if this function is provided, it will be given hightest priority. on the file delete this function will be executed
+        onDelete: null, // (attrs, (deleted) => void, element) => boolean
+        // if this function is provided, it will be given hightest priority. on the file delete this function will be executed
         onUploadSuccess: null,
         withCredentials: true,
         headers: {
-            'X-CSRF-TOKEN': 'CSRF_TOKEN',
-            Authorization: 'Bearer <JSON Web Token>',
+            'X-CSRF-TOKEN': null,
+            Authorization: null,
         },
 
         fileTypes: [],
         disableRemoveByKeyboard: false,
         disableDrag: false,
+        uploadedBy: null, // () => ({ id: any, name: string, variantColor: css color })
     },
     customButton: {
         label: 'Save',
         icon: false,
-        onClick: (evt, data) => {
-            console.log('custom button clicked', evt, data);
-        },
+        onClick: null,
     },
 };

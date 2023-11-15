@@ -21,7 +21,10 @@ export default class FileUploadUI extends Plugin {
         editor.ui.componentFactory.add('fileUpload', (locale) => {
             const view = new FileDialogButtonView(locale);
             const command = editor.commands.get('fileUpload');
-            const fileTypes = editor.config.get('simpleFileUpload.fileTypes');
+
+            const config = editor.config.get('simpleFileUpload');
+            const fileTypes = config?.fileTypes;
+
             const acceptedType = fileTypes?.length
                 ? fileTypes.map((type) => `${type}`).join(',')
                 : null;
@@ -40,6 +43,7 @@ export default class FileUploadUI extends Plugin {
             view.buttonView.bind('isEnabled').to(command);
 
             view.on('done', (evt, file) => {
+                if (!config?.url) return;
                 const fileToUpload = file;
 
                 if (fileToUpload.length) {

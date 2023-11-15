@@ -61,6 +61,9 @@ export default class FileUploadEditing extends Plugin {
             (evt, data) => {
                 // Skip if non empty HTML data is included.
                 // https://github.com/ckeditor/ckeditor5-upload/issues/68
+                if (!this.config?.url) {
+                    return;
+                }
                 if (isHtmlIncluded(data.dataTransfer)) {
                     return;
                 }
@@ -576,27 +579,48 @@ export default class FileUploadEditing extends Plugin {
     }
 
     async _deleteFilePermanently(element) {
-        let deleted = false;
-
         if (typeof this.config?.onDelete === 'function') {
-            deleted = await this.config?.onDelete(element._attrs, element);
-        } else if (this.config?.deleteUrl) {
-            const adapter = new SimpleFileDeleteAdapter(this.editor, element);
-            deleted = await adapter.deleteFile();
-
-            if (!deleted) {
-                window.alert('Failed to delete!!!');
-                return;
-            }
+            this.config?.onDelete(
+                element._attrs,
+                (deleted) => {
+                    if (deleted) {
+                        this.editor.model.enqueueChange(
+                            { isUndoable: false },
+                            (writer) => {
+                                writer.remove(element);
+                                this._destroyContextualToolbar();
+                            }
+                        );
+                    }
+                },
+                element
+            );
         } else {
-            deleted = true;
-        }
+            let deleted = false;
+            if (this.config?.deleteUrl) {
+                const adapter = new SimpleFileDeleteAdapter(
+                    this.editor,
+                    element
+                );
+                deleted = await adapter.deleteFile();
 
-        if (deleted) {
-            this.editor.model.enqueueChange({ isUndoable: false }, (writer) => {
-                writer.remove(element);
-                this._destroyContextualToolbar();
-            });
+                if (!deleted) {
+                    window.alert('Failed to delete!!!');
+                    return;
+                }
+            } else {
+                deleted = true;
+            }
+
+            if (deleted) {
+                this.editor.model.enqueueChange(
+                    { isUndoable: false },
+                    (writer) => {
+                        writer.remove(element);
+                        this._destroyContextualToolbar();
+                    }
+                );
+            }
         }
     }
 }

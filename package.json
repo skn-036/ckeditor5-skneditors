@@ -1,11 +1,12 @@
 {
     "name": "ckeditor5-skneditors",
-    "author": "Muhammad Sajedul Karim",
-    "description": "A custom CKEditor 5 build made by the CKEditor 5 online builder. Custom plugins added to add any files same as SimpleUpload",
-    "version": "1.0.0",
+    "author": "Muhammad Sajedul Karim <noman0703036@gmail.com>",
+    "description": "A custom CKEditor 5 build made by the CKEditor 5 online builder. Custom plugins added for custom file upload same as SimpleUpload",
+    "version": "1.0.7",
     "license": "SEE LICENSE IN LICENSE.md",
     "private": false,
     "main": "./build/ckeditor.js",
+    "repository": "https://github.com/skn-036/ckeditor5-skneditors",
     "devDependencies": {
         "@ckeditor/ckeditor5-alignment": "^40.0.0",
         "@ckeditor/ckeditor5-autoformat": "^40.0.0",

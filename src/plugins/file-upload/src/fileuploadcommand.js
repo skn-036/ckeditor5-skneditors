@@ -22,14 +22,17 @@ export default class FileUploadCommand extends Command {
         const editor = this.editor;
         const model = editor.model;
 
-        const fileRepository = editor.plugins.get(FileRepository);
+        const config = editor.config.get('simpleFileUpload');
+        if (config?.url) {
+            const fileRepository = editor.plugins.get(FileRepository);
 
-        model.change((writer) => {
-            const filesToUpload = options.file;
-            for (const file of filesToUpload) {
-                this._uploadFile(writer, model, fileRepository, file);
-            }
-        });
+            model.change((writer) => {
+                const filesToUpload = options.file;
+                for (const file of filesToUpload) {
+                    this._uploadFile(writer, model, fileRepository, file);
+                }
+            });
+        }
     }
 
     _uploadFile(writer, model, fileRepository, file) {

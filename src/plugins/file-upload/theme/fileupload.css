@@ -1,3 +1,7 @@
+.ck.ck-powered-by {
+    display: none;
+}
+
 .skn-file-upload-placeholder {
     --background: #f8f8f8;
     --border-color: #e6e6e6;
