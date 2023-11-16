@@ -7,8 +7,15 @@ export default class FileUploadCommand extends Command {
     /**
      * @inheritDoc
      */
+
+    constructor(editor) {
+        super(editor);
+        this.config = this.editor.config.get('simpleFileUpload');
+    }
+
     refresh() {
-        this.isEnabled = true;
+        const hasUrl = Boolean(this.config?.uploadUrl);
+        this.isEnabled = hasUrl;
     }
 
     /**
@@ -22,17 +29,15 @@ export default class FileUploadCommand extends Command {
         const editor = this.editor;
         const model = editor.model;
 
-        const config = editor.config.get('simpleFileUpload');
-        if (config?.url) {
-            const fileRepository = editor.plugins.get(FileRepository);
+        const fileRepository = editor.plugins.get(FileRepository);
 
-            model.change((writer) => {
-                const filesToUpload = options.file;
-                for (const file of filesToUpload) {
-                    this._uploadFile(writer, model, fileRepository, file);
-                }
-            });
-        }
+        const filesToUpload = options.file;
+
+        model.change((writer) => {
+            for (const file of filesToUpload) {
+                this._uploadFile(writer, model, fileRepository, file);
+            }
+        });
     }
 
     _uploadFile(writer, model, fileRepository, file) {

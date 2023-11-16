@@ -43,7 +43,6 @@ export default class FileUploadUI extends Plugin {
             view.buttonView.bind('isEnabled').to(command);
 
             view.on('done', (evt, file) => {
-                if (!config?.url) return;
                 const fileToUpload = file;
 
                 if (fileToUpload.length) {

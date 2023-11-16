@@ -61,7 +61,7 @@ export default class FileUploadEditing extends Plugin {
             (evt, data) => {
                 // Skip if non empty HTML data is included.
                 // https://github.com/ckeditor/ckeditor5-upload/issues/68
-                if (!this.config?.url) {
+                if (!this.config?.uploadUrl) {
                     return;
                 }
                 if (isHtmlIncluded(data.dataTransfer)) {
